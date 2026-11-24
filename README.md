@@ -1,18 +1,28 @@
-# 🛡️ Ransomware Detection & Prevention System (Suricata IPS Inline)
+# 🛡️ Ransomware Detection & Prevention System (IDS/IPS with Suricata)
 
 [![Suricata](https://img.shields.io/badge/Suricata-7.0.x_IPS_Inline-orange?style=flat-square&logo=linux)](https://suricata.io/)
 [![Mode](https://img.shields.io/badge/Mode-AF--PACKET_Inline_Bridge-success?style=flat-square)](#)
 [![Environment](https://img.shields.io/badge/Testbed-Kali_Linux_%7C_Ubuntu_%7C_Windows_10-blue?style=flat-square)](https://www.vmware.com/)
 [![Focus](https://img.shields.io/badge/Domain-Network_IDS%2FIPS_%26_SOC_Triage-critical?style=flat-square)](#)
+[![Timeline](https://img.shields.io/badge/Timeline-Sep_2025_--_Nov_2025-informational?style=flat-square)](#)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square)](LICENSE)
 
-> **Đồ án Chuyên ngành An Ninh Mạng (HUTECH):** *Xây dựng hệ thống IDS/IPS nhận diện mẫu lưu lượng Ransomware với Suricata*  
-> **Sinh viên thực hiện:** Tiêu Hoàng Phúc (`2280602483`) & Nguyễn Phú Đạt (`2280619006`) — Lớp `22DTHA1`  
-> **Giảng viên hướng dẫn:** KS. Đinh Huỳnh Tuệ Tuệ
+> 🎓 **Cybersecurity Capstone Project — Đồ án Chuyên ngành An Ninh Mạng (HUTECH | Sep 2025 – Nov 2025)**  
+> **Đề tài:** *Xây dựng hệ thống IDS/IPS nhận diện mẫu lưu lượng Ransomware với Suricata*  
+> **Team Lead & Primary Implementer (Trưởng nhóm & Triển khai chính):** **Tiêu Hoàng Phúc** (`2280602483` — Lớp `22DTHA1`)  
+> **Team Member (Thành viên):** Nguyễn Phú Đạt (`2280619006` — Lớp `22DTHA1`) | **GVHD:** KS. Đinh Huỳnh Tuệ Tuệ  
+>
+> 🔗 **Quick Links (Tài liệu & Demo trực tiếp cho Nhà tuyển dụng / Giảng viên):**  
+> 🎬 [**Watch Live Demo Video (MP4)**](https://drive.google.com/file/d/1-BlyFzWpnag3Q7lFPRkh6HN_DxRM-7c7/view?usp=drive_link) &nbsp;|&nbsp; 📁 [**Google Drive Project Folder**](https://drive.google.com/drive/folders/1ebBT8lkQBgiXf-wst0CD1hmta1t3FRg9) &nbsp;|&nbsp; 📘 [**Báo cáo Word (.DOCX)**](docs/TieuHoangPhuc2280602483_DOANCN.docx) ([*Google Docs*](https://docs.google.com/document/d/1g8FecWMRNVImO8z8poIi-4xcvOY7C_oS/edit?usp=drive_link)) &nbsp;|&nbsp; 📊 [**Slide Bảo vệ (.PPTX)**](docs/XAY_DUNG_HE_THONG_IDS_IPS_SURICATA.pptx) ([*Google Slides*](https://docs.google.com/presentation/d/1N2g-2fpuxjIXm4bU_qWm9IqLRdjnnYNB/edit?usp=drive_link))
 
 An enterprise-simulated **Network Intrusion Detection and Prevention System (NIDS/NIPS)** deployed in **IPS Inline Mode (`AF-PACKET`)** using **Suricata** on an Ubuntu Linux Gateway to detect, alert, and actively drop **Ransomware** traffic (WannaCry, LockBit, SMB lateral movement, HTTP payload droppers, and DGA/C2 beacons) across segmented virtual networks.
 
 Hệ thống mô phỏng kiến trúc **Phát hiện và Ngăn chặn Xâm nhập Mạng (IDS/IPS)** hoạt động ở chế độ **IPS Inline (`AF-PACKET`)** trên Ubuntu Gateway, giúp bóc tách gói tin từ tầng L2–L7, cảnh báo sớm và chủ động cắt đứt (`drop`) các luồng tấn công **Ransomware** theo thời gian thực trước khi mã độc kịp lây lan hoặc mã hóa dữ liệu.
+
+### ✨ Key Technical Highlights (Tóm tắt Kỹ thuật Trọng tâm)
+* **3-VM Inline IPS Architecture:** Deployed a segmented VMware security testbed (`Kali Linux`, `Ubuntu Suricata Gateway`, `Windows 10`) in **IPS Inline mode** via `af-packet` across dual interfaces (`ens33` ↔ `ens37`), tuned with `host-os-policy` and protocol port groups.
+* **Custom Detection & Prevention Rules:** Authored custom Suricata signatures using `content`, `pcre`, and `threshold` to alert and actively `drop` malicious payloads — including HTTP `.exe`/`.msi`/double-extension (`*.pdf.exe`) downloads, SMBv1 (`MS17-010`) exploits, SMB write bursts (`Write AndX`), and DNS C2/DGA beaconing.
+* **100% Detection & SOC Triage Correlation:** Validated rules against simulated phishing chains and `.pcap` traces (achieving **100% detection/drop** of core attack behaviors in test scenarios); correlated Suricata logs (`fast.log`, `eve.json`) with **Windows Security Event Logs (`4688`, `4663`, `7036`)** to reconstruct end-to-end incident timelines.
 
 > [!NOTE]
 > **Ghi chú Lưu trữ & Khôi phục Dự án (Project Recovery Note):**  
@@ -205,6 +215,7 @@ Dựa trên kết quả thực nghiệm từ báo cáo đồ án, bảng dưới
 Toàn bộ báo cáo thuyết minh chi tiết, slide thuyết trình và video demo của đồ án được lưu trữ trực tiếp trong thư mục [`docs/`](docs/) và trên Google Drive:
 
 * 🎬 **Video Demo Thực nghiệm (Full Demo MP4):** [Xem trực tiếp trên Google Drive](https://drive.google.com/file/d/1-BlyFzWpnag3Q7lFPRkh6HN_DxRM-7c7/view?usp=drive_link)
+* 📁 **Thư mục Google Drive Tổng hợp (Full Project Drive Folder):** [Mở thư mục Google Drive](https://drive.google.com/drive/folders/1ebBT8lkQBgiXf-wst0CD1hmta1t3FRg9)
 * 📘 **Báo cáo Đồ án Chuyên ngành (Full Report - DOCX):** [`docs/TieuHoangPhuc2280602483_DOANCN.docx`](docs/TieuHoangPhuc2280602483_DOANCN.docx) | [Xem trên Google Docs](https://docs.google.com/document/d/1g8FecWMRNVImO8z8poIi-4xcvOY7C_oS/edit?usp=drive_link)
 * 📊 **Slide Thuyết trình Bảo vệ (Presentation Slides - PPTX):** [`docs/XAY_DUNG_HE_THONG_IDS_IPS_SURICATA.pptx`](docs/XAY_DUNG_HE_THONG_IDS_IPS_SURICATA.pptx) | [Xem trên Google Slides](https://docs.google.com/presentation/d/1N2g-2fpuxjIXm4bU_qWm9IqLRdjnnYNB/edit?usp=drive_link)
 
