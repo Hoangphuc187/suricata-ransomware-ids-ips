@@ -14,6 +14,12 @@ An enterprise-simulated **Network Intrusion Detection and Prevention System (NID
 
 Hệ thống mô phỏng kiến trúc **Phát hiện và Ngăn chặn Xâm nhập Mạng (IDS/IPS)** hoạt động ở chế độ **IPS Inline (`AF-PACKET`)** trên Ubuntu Gateway, giúp bóc tách gói tin từ tầng L2–L7, cảnh báo sớm và chủ động cắt đứt (`drop`) các luồng tấn công **Ransomware** theo thời gian thực trước khi mã độc kịp lây lan hoặc mã hóa dữ liệu.
 
+> [!NOTE]
+> **Ghi chú Lưu trữ & Khôi phục Dự án (Project Recovery Note):**  
+> Trong quá trình thực hiện đồ án, máy tính làm việc chính không may bị nhiễm mã độc nên môi trường máy ảo (VM) gốc không còn nguyên vẹn. Các tư liệu gốc còn lưu giữ được bao gồm: **mã nguồn mẫu thử mã độc (payload/malware source)**, **báo cáo thuyết minh Word (`.docx`)**, **video quay thực nghiệm (`.mp4`)** và **slide báo cáo (`.pptx` / `.pdf`)** *(không đăng tải mã nguồn mã độc trực tiếp lên GitHub vì lý do an toàn)*. Toàn bộ file cấu hình Suricata, bộ luật IDS/IPS, mẫu log và sơ đồ trong repository này đã được trích xuất và tái tạo chuẩn xác từ các tài liệu gốc đó.
+>
+> *During the project period, the primary host machine was affected by a malware incident. The surviving original materials include the **test payload source code**, the **Word technical report (`.docx`)**, the **demo video (`.mp4`)**, and the **presentation slides (`.pptx` / `.pdf`)** (malware source code is omitted from this public repo for safety compliance). All Suricata configurations, rules, logs, and diagrams in this repository were faithfully reconstructed from those surviving artifacts.*
+
 ---
 
 ## 📑 Table of Contents / Mục lục
