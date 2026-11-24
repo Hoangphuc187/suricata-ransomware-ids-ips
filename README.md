@@ -20,9 +20,16 @@ An enterprise-simulated **Network Intrusion Detection and Prevention System (NID
 Hệ thống mô phỏng kiến trúc **Phát hiện và Ngăn chặn Xâm nhập Mạng (IDS/IPS)** hoạt động ở chế độ **IPS Inline (`AF-PACKET`)** trên Ubuntu Gateway, giúp bóc tách gói tin từ tầng L2–L7, cảnh báo sớm và chủ động cắt đứt (`drop`) các luồng tấn công **Ransomware** theo thời gian thực trước khi mã độc kịp lây lan hoặc mã hóa dữ liệu.
 
 ### ✨ Key Technical Highlights (Tóm tắt Kỹ thuật Trọng tâm)
-* **3-VM Inline IPS Architecture:** Deployed a segmented VMware security testbed (`Kali Linux`, `Ubuntu Suricata Gateway`, `Windows 10`) in **IPS Inline mode** via `af-packet` across dual interfaces (`ens33` ↔ `ens37`), tuned with `host-os-policy` and protocol port groups.
-* **Custom Detection & Prevention Rules:** Authored custom Suricata signatures using `content`, `pcre`, and `threshold` to alert and actively `drop` malicious payloads — including HTTP `.exe`/`.msi`/double-extension (`*.pdf.exe`) downloads, SMBv1 (`MS17-010`) exploits, SMB write bursts (`Write AndX`), and DNS C2/DGA beaconing.
-* **100% Detection & SOC Triage Correlation:** Validated rules against simulated phishing chains and `.pcap` traces (achieving **100% detection/drop** of core attack behaviors in test scenarios); correlated Suricata logs (`fast.log`, `eve.json`) with **Windows Security Event Logs (`4688`, `4663`, `7036`)** to reconstruct end-to-end incident timelines.
+
+**English (CV Summary):**
+* **3-VM Inline IPS Architecture:** Architected and deployed a 3-VM network security lab (`Kali Linux`, `Ubuntu Suricata Gateway`, `Windows 10`) in **IPS Inline mode** via `af-packet` across dual interfaces (`ens33`, `ens37`), configuring `host-os-policy` and protocol port groups.
+* **Custom Detection & Prevention Rules:** Authored custom IDS/IPS rules (`content`, `pcre`, `threshold`) mapped to **MITRE ATT&CK** to alert and actively `drop` SMBv1 (`MS17-010`) exploits, HTTP `.exe`/`.msi`/double-extension payloads (`MZ` header), SMB write bursts, and DNS DGA/killswitch queries.
+* **100% Detection & SOC Triage Correlation:** Validated rules against simulated phishing chains and `.pcap` traces, achieving **100% detection and inline drop** of core attack behaviors; correlated Suricata logs (`fast.log`, `eve.json`) with **Windows Event Logs (`4688`, `4663`, `7036`)** for SOC incident timeline reconstruction.
+
+**Tiếng Việt (Tóm tắt Đồ án):**
+* **Thiết kế & Triển khai Lab IPS Inline 3 Máy ảo:** Xây dựng mô hình mạng bảo mật gồm 3 máy ảo (`Kali Linux`, `Ubuntu Suricata Gateway`, `Windows 10`) hoạt động ở chế độ **IPS Inline** qua cơ chế cầu nối `af-packet` trên 2 card mạng (`ens33`, `ens37`), tối ưu hóa chính sách hệ điều hành (`host-os-policy`) và phân nhóm cổng giao thức.
+* **Xây dựng Bộ luật IDS/IPS Tùy chỉnh:** Thiết kế bộ rule phát hiện và ngăn chặn chuyên sâu (`content`, `pcre`, `threshold`) ánh xạ theo khung **MITRE ATT&CK** nhằm cảnh báo và chủ động cắt đứt (`drop`) các khai thác lỗ hổng SMBv1 (`MS17-010`), hành vi tải payload `.exe`/`.msi`/đuôi kép (`*.pdf.exe`, nhận diện `MZ` header) qua HTTP, ghi/mã hóa file SMB hàng loạt (`Write AndX`) và truy vấn DNS DGA/Killswitch.
+* **Kiểm thử Thực nghiệm & Truy vết Sự cố theo Quy trình SOC:** Kiểm chứng bộ luật trên kịch bản tấn công Phishing kết hợp tập mẫu `.pcap`, đạt tỷ lệ **100% phát hiện và chặn chủ động** các hành vi tấn công cốt lõi; phân tích tương quan log Suricata (`fast.log`, `eve.json`) với **Windows Event Logs (`4688`, `4663`, `7036`)** để tái dựng toàn bộ chuỗi thời gian (timeline) sự cố.
 
 > [!NOTE]
 > **Ghi chú Lưu trữ & Khôi phục Dự án (Project Recovery Note):**  
