@@ -1,0 +1,18 @@
+# ==============================================================================
+# WANACRY / RANSOMWARE - AGGRESSIVE IPS INLINE BLOCKING RULES
+# File: /etc/suricata/rules/ips_demo.rules
+# ==============================================================================
+
+# 0) KILLSWITCH - Cho phép (pass) hoặc chặn thử nghiệm domain killswitch WannaCry
+pass dns $HOME_NET any -> any any (msg:"PASS WannaCry killswitch domain (dung block, de malware tu dung)"; flow:to_server; dns.query; content:"iuqerfsodp9ifjaposdfjhgosurijfaewrwergwea.com"; nocase; sid:2900000; rev:1;)
+
+# A) SMB: Chặn ở cửa TCP (SYN) & triệt tiêu SMBv1 (MS17-010 / EternalBlue)
+drop tcp $HOME_NET any -> $EXTERNAL_NET 445 (msg:"IPS DROP WANACRY - outbound TCP/445 blocked (SYN)"; flags:S; ack:0; classtype:network-scan; sid:2901001; rev:1;)
+drop tcp $EXTERNAL_NET any -> $HOME_NET 445 (msg:"IPS DROP WANACRY - inbound TCP/445 blocked (SYN)"; flags:S; ack:0; classtype:network-scan; sid:2901002; rev:1;)
+drop tcp any any -> $HOME_NET [139,445] (msg:"IPS DROP WANACRY - SMBv1 signature to HOME_NET"; flow:to_server,established; content:"|FF 53 4D 42|"; depth:4; classtype:protocol-command-decode; sid:2901003; rev:1;)
+drop smb any any -> any any (msg:"DROP - Ransomware SMB Behavior Detected (Write AndX)"; content:"Write AndX"; classtype:trojan-activity; sid:400004; rev:1;)
+
+# B) HTTP: Cắt đứt ngay từ REQUEST (ngăn tải .exe/.dll/.zip/double-extension)
+drop http $HOME_NET any -> $EXTERNAL_NET any (msg:"IPS DROP WANACRY - HTTP GET executable (.exe|.dll)"; flow:to_server,established; http.method; content:"GET"; http.uri; pcre:"/\.(exe|dll)(\?|$)/Ui"; classtype:bad-unknown; sid:2902001; rev:1;)
+drop http $HOME_NET any -> $EXTERNAL_NET any (msg:"IPS DROP WANACRY - HTTP GET archive/script payload"; flow:to_server,established; http.method; content:"GET"; http.uri; pcre:"/\.(zip|7z|rar|ps1|js|vbs)(\?|$)/Ui"; classtype:bad-unknown; sid:2902002; rev:1;)
+drop http $HOME_NET any -> $EXTERNAL_NET any (msg:"IPS DROP WANACRY - double-extension download (jpg|png|gif|pdf).exe"; flow:to_server,established; http.uri; pcre:"/\.(jpg|png|gif|pdf)\.exe(\?|$)/i"; classtype:bad-unknown; sid:2902003; rev:1;)

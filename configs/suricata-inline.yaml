@@ -1,0 +1,141 @@
+%YAML 1.1
+---
+# Suricata 7.0.x Configuration — Ransomware IDS/IPS Inline System
+# Project: Xây dựng hệ thống IDS/IPS nhận diện mẫu lưu lượng Ransomware với Suricata
+# Authors: Tiêu Hoàng Phúc (2280602483) & Nguyễn Phú Đạt (2280619006) — HUTECH
+
+vars:
+  address-groups:
+    HOME_NET: "[192.168.47.0/24,192.168.80.0/24,192.168.23.0/24]"
+    EXTERNAL_NET: "any"
+    HTTP_SERVERS: "$HOME_NET"
+    SMTP_SERVERS: "$HOME_NET"
+    SQL_SERVERS: "$HOME_NET"
+    DNS_SERVERS: "$HOME_NET"
+    TELNET_SERVERS: "$HOME_NET"
+    AIM_SERVERS: "$EXTERNAL_NET"
+    DC_SERVERS: "$HOME_NET"
+    DNP3_SERVER: "$HOME_NET"
+    DNP3_CLIENT: "$HOME_NET"
+    MODBUS_CLIENT: "$HOME_NET"
+    MODBUS_SERVER: "$HOME_NET"
+    ENIP_CLIENT: "$HOME_NET"
+    ENIP_SERVER: "$HOME_NET"
+
+  port-groups:
+    HTTP_PORTS: "[80,8080]"
+    SHELLCODE_PORTS: "!80"
+    ORACLE_PORTS: 1521
+    SSH_PORTS: 22
+    DNP3_PORTS: 20000
+    MODBUS_PORTS: 502
+    FILE_DATA_PORTS: "[$HTTP_PORTS,110,143]"
+    FTP_PORTS: 21
+    GENEVE_PORTS: 6081
+    VXLAN_PORTS: 4789
+    TEREDO_PORTS: 3544
+    DNS_PORTS: 53
+    SMB_PORTS: "[445,139]"
+    TLS_PORTS: 443
+
+default-log-dir: /var/log/suricata/
+
+stats:
+  enabled: yes
+  interval: 8
+
+outputs:
+  - fast:
+      enabled: yes
+      filename: fast.log
+      append: yes
+
+  - eve-log:
+      enabled: yes
+      filetype: regular
+      filename: eve.json
+      pcap-file: false
+      community-id: false
+      types:
+        - alert:
+            tagged-packets: yes
+        - drop:
+            alerts: yes
+        - anomaly:
+            enabled: yes
+        - http:
+            extended: yes
+        - dns:
+            version: 2
+        - tls:
+            extended: yes
+        - files:
+            force-magic: no
+        - smtp:
+        - smb:
+            enabled: yes
+        - flow
+
+# Inline IPS Bridge configuration across dual interfaces (Kali <-> Ubuntu <-> Windows 10)
+af-packet:
+  - interface: ens33
+    cluster-id: 99
+    cluster-type: cluster_flow
+    defrag: yes
+    use-mmap: yes
+    tpacket-v3: yes
+    copy-mode: ips
+    copy-iface: ens37
+
+  - interface: ens37
+    cluster-id: 98
+    cluster-type: cluster_flow
+    defrag: yes
+    use-mmap: yes
+    tpacket-v3: yes
+    copy-mode: ips
+    copy-iface: ens33
+
+app-layer:
+  protocols:
+    tls:
+      enabled: yes
+      detection-ports:
+        dp: 443
+    http:
+      enabled: yes
+    smb:
+      enabled: yes
+      detection-ports:
+        dp: 139, 445
+    dns:
+      tcp:
+        enabled: yes
+        detection-ports:
+          dp: 53
+      udp:
+        enabled: yes
+        detection-ports:
+          dp: 53
+
+# OS-specific TCP stream reassembly policies
+host-os-policy:
+  windows: [192.168.80.129, 192.168.23.134]
+  bsd: []
+  bsd-right: []
+  old-linux: []
+  linux: [192.168.47.129, 192.168.47.128, 192.168.80.128, 192.168.23.130]
+  old-solaris: []
+  solaris: []
+  hpux10: []
+  hpux11: []
+  irix: []
+  macos: []
+  vista: []
+  windows2k3: []
+
+default-rule-path: /etc/suricata/rules
+
+rule-files:
+  - ips_demo.rules
+  - ransomware.rules

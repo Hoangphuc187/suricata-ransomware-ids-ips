@@ -1,0 +1,27 @@
+# Suricata runtime & large telemetry logs (keep logs-sample/ tracked)
+*.pcap
+*.pcapng
+/var/
+*.pid
+*.log
+!logs-sample/*.log
+
+# Temporary / backup files
+*.bak
+*.tmp
+*.swp
+*~
+
+# OS metadata
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Office temporary lock files
+~$*.docx
+~$*.pptx
+~$*.xlsx
+
+# IDE / Editor directories
+.vscode/
+.idea/

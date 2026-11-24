@@ -1,0 +1,7 @@
+10/19/2025-11:39:58.544415  [Drop] [**] [1:2000010:1] IPS DROP DNS killswitch query [**] [Classification: (null)] [Priority: 3] {UDP} 192.168.23.130:49806 -> 8.8.8.8:53
+10/19/2025-11:39:58.544415  [**] [1:1000001:5] RANSOMWARE WannaCry killswitch domain lookup (request) [**] [Classification: A Network Trojan was detected] [Priority: 1] {UDP} 192.168.23.130:49806 -> 8.8.8.8:53
+10/19/2025-11:40:29.397607  [Drop] [**] [1:2000001:1] IPS DROP SMB SYN to 445 [**] [Classification: (null)] [Priority: 3] {TCP} 192.168.23.130:60316 -> 192.168.23.134:445
+11/16/2025-08:50:15.929717  [**] [1:1000010:3] RANSOMWARE Kha nghi tai file .exe qua HTTP (request) [**] [Classification: Potentially Bad Traffic] [Priority: 2] {TCP} 192.168.23.134:51322 -> 171.243.228.160:80
+11/16/2025-08:50:16.652649  [Drop] [**] [1:2000020:1] IPS DROP HTTP GET .exe [**] [Classification: (null)] [Priority: 3] {TCP} 192.168.23.134:51325 -> 146.75.46.172:80
+11/16/2025-08:50:16.683945  [**] [1:1000011:3] RANSOMWARE PE content trong HTTP response (MZ header) [**] [Classification: Potentially Bad Traffic] [Priority: 2] {TCP} 146.75.46.172:80 -> 192.168.23.134:51325
+11/15/2025-14:22:21.559204  [Drop] [**] [1:400004:1] DROP - Ransomware SMB Behavior Detected [**] [Classification: Misc activity] [Priority: 3] {TCP} 192.168.80.129:49820 -> 192.168.47.129:445

@@ -1,0 +1,16 @@
+# ==============================================================================
+# Custom Suricata IDS Detection Rules for Ransomware Traffic
+# Project: Xây dựng hệ thống IDS/IPS nhận diện mẫu lưu lượng Ransomware với Suricata
+# ==============================================================================
+
+# 1. Phát hiện tải file .msi / .exe bất thường qua HTTP về máy nạn nhân
+alert http any any -> $HOME_NET any (msg:"Suspicious EXE/MSI Download - Possible Ransomware Dropper"; content:".msi"; http.uri; flow:from_server; classtype:trojan-activity; sid:100001; rev:1;)
+alert http $HOME_NET any -> any any (msg:"RANSOMWARE Kha nghi tai file .exe qua HTTP (request)"; flow:to_server,established; http.method; content:"GET"; http.uri; pcre:"/\.exe(\?|$)/Ui"; classtype:bad-unknown; sid:1000010; rev:3;)
+alert http any any -> $HOME_NET any (msg:"RANSOMWARE PE content trong HTTP response (MZ header)"; flow:to_client,established; content:"|4D 5A|"; depth:2; classtype:bad-unknown; sid:1000011; rev:3;)
+
+# 2. Phát hiện hành vi ghi file SMB liên tục (dấu hiệu mã hóa hàng loạt qua mạng)
+alert smb any any -> any any (msg:"Possible Ransomware Activity - SMB Write Burst"; flow:established,to_server; content:"Write AndX"; threshold:type both, track by_src, count 10, seconds 5; classtype:trojan-activity; sid:200002; rev:1;)
+
+# 3. Phát hiện truy vấn DNS tên miền ngẫu nhiên (DGA / C2 Beacon) & WannaCry Killswitch
+alert dns any any -> any any (msg:"Suspicious DNS Query - Potential Beacon"; pcre:"/^[a-z0-9]{20,}\./"; classtype:bad-unknown; sid:300003; rev:1;)
+alert dns $HOME_NET any -> any any (msg:"RANSOMWARE WannaCry killswitch domain lookup (request)"; flow:to_server; dns.query; content:"iuqerfsodp9ifjaposdfjhgosurijfaewrwergwea.com"; nocase; classtype:trojan-activity; sid:1000001; rev:5;)
