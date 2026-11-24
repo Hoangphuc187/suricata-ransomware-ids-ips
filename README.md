@@ -7,7 +7,7 @@
 [![Timeline](https://img.shields.io/badge/Timeline-Sep_2025_--_Nov_2025-informational?style=flat-square)](#)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square)](LICENSE)
 
-> 🎓 **Cybersecurity Capstone Project — Đồ án Chuyên ngành An Ninh Mạng (HUTECH | Sep 2025 – Nov 2025)**  
+> 🎓 **Specialized Cybersecurity Project — Đồ án Chuyên ngành An Ninh Mạng (HUTECH | Sep 2025 – Nov 2025)**  
 > **Đề tài:** *Xây dựng hệ thống IDS/IPS nhận diện mẫu lưu lượng Ransomware với Suricata*  
 > **Team Lead & Primary Implementer (Trưởng nhóm & Triển khai chính):** **Tiêu Hoàng Phúc** (`2280602483` — Lớp `22DTHA1`)  
 > **Team Member (Thành viên):** Nguyễn Phú Đạt (`2280619006` — Lớp `22DTHA1`) | **GVHD:** KS. Đinh Huỳnh Tuệ Tuệ  
